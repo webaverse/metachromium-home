@@ -1,0 +1,183 @@
+<!doctype html>
+<html>
+<head>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap" rel="stylesheet">
+<script src="https://kit.fontawesome.com/0735724151.js" crossorigin="anonymous"></script>
+<script src="https://rawcdn.githack.com/ethereum/web3.js/a6ddec59e65116853435f203b25cb9c55824d084/dist/web3.min.js"></script>
+<style>
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: 'Open Sans';
+}
+header {
+  position: absolute;
+  display: flex;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 50px;
+  background-color: #FFF;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+  align-items: center;
+  user-select: none;
+  z-index: 1;
+}
+header .icon {
+  height: 25px;
+  margin: 0 10px;
+}
+header .nav {
+  display: flex;
+  height: 100%;
+  padding: 0 10px;
+  justify-content: center;
+  align-items: center;
+  border-top: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+  color: inherit;
+  font-size: 14px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+header .nav:hover, header .nav.open {
+  border-bottom-color: #9575cd;
+}
+header .nav i {
+  margin-right: 5px;
+}
+/* header .nav i {
+  display: inline-block;
+  padding: 0 7px;
+  padding-top: 2px;
+} */
+.body {
+  background-color: #000;
+}
+.hero,
+.detail
+{
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.hero {
+  min-width: 100vw;
+  min-height: 100vh;
+  padding-top: 50px;
+}
+.container {
+  position: relative;
+  display: flex;
+  width: 600px;
+  margin-left: 100px;
+  color: #FFF;
+  flex-direction: column;
+}
+.hero .container h1,
+.hero .container p
+{
+  margin: 0;
+  margin-bottom: 30px;
+}
+.hero .container h1 {
+  padding: 20px 0;
+  border-bottom: 2px solid #FFF;
+  font-size: 40px;
+  font-weight: 400;
+}
+.hero img,
+.hero video
+{
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  object-fit: cover;
+  /* filter: brightness(50%) blur(5px); */
+}
+.button,
+.key
+{
+  display: inline-flex;
+  margin-right: auto;
+  padding: 20px;
+  background-color: #ef5350;
+  border: 0;
+  border-radius: 10px;
+  color: #FFF;
+  font-size: 14px;
+  /* font-weight: 600; */
+  align-items: center;
+  text-decoration: none;
+  cursor: pointer;
+  outline: none;
+}
+.button:hover,
+.key
+{
+  background-color: #FFF;
+  color: #ef5350;
+}
+.button > i,
+.key > i
+{
+  margin-right: 7px;
+  font-size: 20px;
+}
+.key {
+  cursor: text;
+}
+</style>
+</head>
+<body class=body>
+<header id=header>
+  <a href="/" class="nav">Metachromium</a>
+  <!-- <a href="/" class="nav">竹ヨナムららエリ竹</a> -->
+  <!-- <a href="https://get.metachromium.com/" class="nav open"><i class="fa fa-download"></i> Download</a> -->
+  <!-- <a href="https://extension.metachromium.com/" class="nav"><i class="fa fa-download"></i> Extension</a> -->
+  <!-- <a href="https://github.com/webaverse/xrpackage" class="nav"><i class="fa fa-github"></i> SDK</a> -->
+</header>
+<section class=hero>
+  <!-- <img src="screenshot.jpg"> -->
+  <video src="https://rawcdn.githack.com/exokitxr/webaverse/9e46f51ec76ec0641fe55825addc4bda5a051e82/video/video.mp4" autoplay="" muted="" loop=""></video>
+  <div class=container>
+    <h1>Augment your SteamVR</h1>
+    <p>Metachromium adds AR to your VR.<br>It is a version of Chromium that layers WebXR on top of SteamVR.<br>Tame a AR pet, scan QR codes, and more.</p>
+    <nav class=button id=button><i class="fa fa-steam"></i><span>Request Steam Key</span></nav>
+    <div class=key id=key style="display: none;"><i class="fa fa-steam"></i><span id=key-text></span></div>
+  </div>
+</section>
+<script>
+  const button = document.getElementById('button');
+  const key = document.getElementById('key');
+  const keyText = document.getElementById('key-text');
+  const keyValue = localStorage.getItem('key');
+  const _hide = () => {
+    button.style.display = 'none';
+    key.style.display = null;
+  };
+  if (keyValue) {
+    _hide();
+    keyText.innerText = keyValue;
+  } else {
+    button.addEventListener('click', async e => {
+      const res = await fetch('https://keys.metachromium.com/', {
+        method: 'DELETE',
+      });
+      if (res.ok) {
+        const j = await res.json();
+        localStorage.setItem('key', j);
+        keyText.innerText = j;
+      } else {
+        keyText.innerText = 'No more keys!';
+      }
+      _hide();
+    });
+  }
+</script>
+</body>
+</html>
